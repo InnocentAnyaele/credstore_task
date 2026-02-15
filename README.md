@@ -2,17 +2,23 @@
 
 ## Setup
 
-1. Start databases:
+Create and activate a Python 3.11 environment:
 ```bash
-docker-compose up -d
+conda create -n product-verify python=3.11 -y
+conda activate product-verify
 ```
 
-2. Install dependencies:
+Start databases:
+```bash
+docker compose up -d
+```
+
+Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Run application:
+Run application:
 ```bash
 python main.py
 ```
