@@ -1,7 +1,5 @@
 # Product Verification System
 
-A FastAPI application implementing clean layered architecture with product verification workflow.
-
 ## Setup
 
 1. Start databases:
