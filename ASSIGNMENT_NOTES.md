@@ -233,14 +233,14 @@ curl http://localhost:8000/api/v1/products/{product_id}
 
 ## Architecture Validation
 
-✅ **No business logic in routers**: Routers only map requests to use case calls
-✅ **No repository calls from routers**: All repository access via use cases
-✅ **Use cases exist as distinct layer**: Separate folder with clear orchestration responsibility  
-✅ **Tests included**: Unit tests for verification logic, integration tests for workflows
-✅ **Status starts as pending_verification**: Enforced in Product entity constructor
-✅ **MySQL + MongoDB integration**: Intentional separation of concerns
-✅ **Event dispatcher with DI**: Interface-based design with injectable implementation
-✅ **State transitions enforced**: Domain entity guards invalid state changes
+**No business logic in routers**: Routers only map requests to use case calls
+**No repository calls from routers**: All repository access via use cases
+**Use cases exist as distinct layer**: Separate folder with clear orchestration responsibility  
+**Tests included**: Unit tests for verification logic, integration tests for workflows
+**Status starts as pending_verification**: Enforced in Product entity constructor
+**MySQL + MongoDB integration**: Intentional separation of concerns
+**Event dispatcher with DI**: Interface-based design with injectable implementation
+**State transitions enforced**: Domain entity guards invalid state changes
 
 ## Project Structure
 ```
