@@ -5,10 +5,10 @@ from datetime import datetime
 
 class CreateProductRequest(BaseModel):
     name: str
-    price: float = Field(gt=0)
+    price: float
     currency: str
     category: str
-    stock_quantity: int = Field(ge=0)
+    stock_quantity: int
     assets: List[str]
 
 

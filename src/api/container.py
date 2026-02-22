@@ -6,9 +6,14 @@ from src.domain.event_dispatcher import InMemoryEventDispatcher
 from src.use_cases import CreateProductUseCase, VerifyProductUseCase, GetProductUseCase
 
 
+from sqlalchemy.pool import NullPool
+
+
 class Container:
     def __init__(self, mysql_url: str, mongo_url: str, mongo_db: str):
-        self._mysql_engine = create_async_engine(mysql_url, echo=False)
+        self._mysql_engine = create_async_engine(
+            mysql_url, echo=False, poolclass=NullPool
+        )
         self._session_factory = async_sessionmaker(
             self._mysql_engine, class_=AsyncSession, expire_on_commit=False
         )

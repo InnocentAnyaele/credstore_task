@@ -4,29 +4,25 @@ from contextlib import asynccontextmanager
 from src.api.router import router
 from src.api.container import Container
 from src.infrastructure.mysql_models import Base
+from sqlalchemy.pool import NullPool
 
-container = None
-
+MYSQL_URL = "mysql+aiomysql://root:password@localhost:3306/product_db"
+MONGO_URL = "mongodb://localhost:27017"
+MONGO_DB = "product_verification"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global container
-
-    mysql_url = "mysql+aiomysql://root:password@localhost:3306/product_db"
-    mongo_url = "mongodb://localhost:27017"
-    mongo_db = "product_verification"
-
-    container = Container(mysql_url, mongo_url, mongo_db)
+    app.state.container = Container(MYSQL_URL, MONGO_URL, MONGO_DB)
 
     from sqlalchemy.ext.asyncio import create_async_engine
 
-    engine = create_async_engine(mysql_url, echo=False)
+    engine = create_async_engine(MYSQL_URL, echo=False, poolclass=NullPool)
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
     yield
 
-    await container.close()
+    await app.state.container.close()
 
 
 app = FastAPI(title="Product Verification API", lifespan=lifespan)

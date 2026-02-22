@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request
 
 from src.api.schemas import CreateProductRequest, ProductResponse, VerifyProductResponse
 from src.api.container import Container
@@ -7,10 +7,15 @@ from src.use_cases import CreateProductUseCase, VerifyProductUseCase, GetProduct
 router = APIRouter(prefix="/api/v1/products", tags=["products"])
 
 
-def get_container() -> Container:
-    from src.api.app import container
+def get_container(request: Request) -> Container:
+    # Try to get from app state (lifespan managed)
+    if hasattr(request.app.state, "container"):
+        return request.app.state.container
 
-    return container
+    # Fallback to creating a new container for this request (for tests/environments where lifespan didn't run)
+    from src.api.app import MYSQL_URL, MONGO_URL, MONGO_DB
+
+    return Container(MYSQL_URL, MONGO_URL, MONGO_DB)
 
 
 @router.post("", response_model=ProductResponse, status_code=201)
